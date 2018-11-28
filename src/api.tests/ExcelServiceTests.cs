@@ -21,7 +21,7 @@ namespace Api.Tests
 
             using(var excelService = new ExcelService(base64Excel))
             {
-                var actualResult = excelService.ReplaceTokens(template);
+                var actualResult = excelService.GetCellData(template);
 
                 Assert.Equal(expectedResult, actualResult);
             }

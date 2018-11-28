@@ -30,7 +30,7 @@ public class ExcelService : IDisposable
         workbookPart = spreadsheet.WorkbookPart;
     }
 
-    public string ReplaceTokens(string template)
+    public string GetCellData(string template)
     {
         var tokenRegex = new Regex(@"\$\{(.*?)!(.*?)\}");
         var tokenMatches = tokenRegex.Matches(template);
