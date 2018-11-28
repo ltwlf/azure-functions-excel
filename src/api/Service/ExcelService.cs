@@ -30,7 +30,7 @@ public class ExcelService : IDisposable
         workbookPart = spreadsheet.WorkbookPart;
     }
 
-    public string ReplaceCellValues(string template)
+    public string ReplaceTokens(string template)
     {
         var tokenRegex = new Regex(@"\$\{(.*?)!(.*?)\}");
         var tokenMatches = tokenRegex.Matches(template);
@@ -44,11 +44,14 @@ public class ExcelService : IDisposable
             var sheet = workbookPart.Workbook.Descendants<Sheet>()
                 .Where(s => s.Name == sheetName).FirstOrDefault();
 
-            var wsPart = (WorksheetPart)(workbookPart.GetPartById(sheet.Id));
+            if(sheet != null)
+            {
+                var wsPart = (WorksheetPart)(workbookPart.GetPartById(sheet.Id));
 
-            var value = GetCellValue(wsPart, cellRef);
+                var value = GetCellValue(wsPart, cellRef);
 
-            template = template.Replace(tokenString, value);
+                template = template.Replace(tokenString, value);
+            }
         }
 
         return template;
