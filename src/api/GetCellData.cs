@@ -47,7 +47,7 @@ namespace Ltwlf.Functions.Excel
 
             var res = starter.CreateCheckStatusResponse(req, instanceId);
 
-            res.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(10));
+            res.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(5));
 
             return res;
         }
