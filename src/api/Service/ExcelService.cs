@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -50,7 +51,7 @@ public class ExcelService : IDisposable
 
                 var value = GetCellValue(wsPart, cellRef);
 
-                template = template.Replace(tokenString, value);
+                template = template.Replace(tokenString, HttpUtility.JavaScriptStringEncode(value));
             }
         }
 
