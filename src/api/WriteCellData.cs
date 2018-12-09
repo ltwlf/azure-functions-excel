@@ -14,24 +14,24 @@ using System.Collections.Generic;
 namespace Ltwlf.Functions.Excel
 {
     [Serializable]
-    public class GetCellDataMessageInput
+    public class WriteCellDataMessageInput
     {
         [JsonProperty("excelAsBase64")]
         public string ExcelAsBase64 { get; set; }
 
-        [JsonProperty("template")]
-        public string Template { get; set; }
+        [JsonProperty("mapping")]
+        public string Mapping { get; set; }
     }
 
-    public class GetCellDataMessageOutput
+    public class WriteCellDataMessageOutput
     {
         [JsonProperty("result")]
         public string Result { get; set; }
     }
-    public static class GetCellDataFunction
+    public static class WriteCellDataFunction
     {
 
-        [FunctionName("GetCellData")]
+        [FunctionName("WriteCellData")]
         public static async Task<HttpResponseMessage> HttpStart(
             [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestMessage req,
             [OrchestrationClient] DurableOrchestrationClient starter,
@@ -39,9 +39,9 @@ namespace Ltwlf.Functions.Excel
         {
             var data = await req.Content.ReadAsStringAsync();
 
-            var msg = JsonConvert.DeserializeObject<GetCellDataMessageInput>(data);
+            var msg = JsonConvert.DeserializeObject<WriteCellDataMessageInput>(data);
 
-            string instanceId = await starter.StartNewAsync("GetCellDataOrchestrator", msg);
+            string instanceId = await starter.StartNewAsync("WriteCellDataOrchestrator", msg);
 
             log.LogInformation($"Started orchestration with ID = '{instanceId}'.");
 
@@ -52,25 +52,27 @@ namespace Ltwlf.Functions.Excel
             return res;
         }
 
-        [FunctionName("GetCellDataOrchestrator")]
-        public static async Task<GetCellDataMessageOutput> GetCellDataOrchestrator(
+        [FunctionName("WriteCellDataOrchestrator")]
+        public static async Task<WriteCellDataMessageOutput> WriteCellDataOrchestrator(
             [OrchestrationTrigger] DurableOrchestrationContext context)
         {
-            var msg = context.GetInput<GetCellDataMessageInput>();
+            var msg = context.GetInput<WriteCellDataMessageInput>();
 
-            return await context.CallActivityAsync<GetCellDataMessageOutput>("GetCellDataWorker", msg);
+            return await context.CallActivityAsync<WriteCellDataMessageOutput>("WriteCellDataWorker", msg);
         }
 
-        [FunctionName("GetCellDataWorker")]
-        public static object GetCellDataWorker([ActivityTrigger]GetCellDataMessageInput msg, ILogger log)
+        [FunctionName("WriteCellDataWorker")]
+        public static object WriteCellDataWorker([ActivityTrigger]WriteCellDataMessageInput msg, ILogger log)
         {
             var excelAsBase64 = msg.ExcelAsBase64;
-            var template = msg.Template;
 
             try
             {
                 var excelService = new ExcelService(excelAsBase64);
-                var result = excelService.GetCellData(template);
+
+                var mapping = JsonConvert.DeserializeObject<Dictionary<string, object>>(msg.Mapping);
+
+                var result = excelService.WriteCellData(mapping);
 
                 return new GetCellDataMessageOutput()
                 {
@@ -79,7 +81,7 @@ namespace Ltwlf.Functions.Excel
             }
             catch (Exception ex)
             {
-                log.LogError(ex, "Error while reading to Excel");
+                log.LogError(ex, "Error while writting to Excel");
                 throw;
             }
         }
