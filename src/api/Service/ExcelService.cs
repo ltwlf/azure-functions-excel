@@ -19,7 +19,8 @@ public class ExcelService : IDisposable
     {
         var binExcel = Convert.FromBase64String(excelAsBase64);
 
-        stream = new MemoryStream(binExcel);
+        stream = new MemoryStream();
+        stream.WriteAsync(binExcel);
 
         spreadsheet = SpreadsheetDocument.Open(stream, true);
 
