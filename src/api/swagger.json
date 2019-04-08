@@ -132,7 +132,7 @@
                     },
                     "mapping": {
                       "type": "string",
-                      "description": "mapping e.g. {{\"Sheet 1!A12\":\"value\"}, {\"Sheet 2!B5\":\"value\"}}",
+                      "description": "mapping e.g. {\"Sheet 1!A12\":\"value\", \"Sheet 2!B5\":\"value\"}",
                       "title": "",
                       "x-ms-visibility": "internal"
                     }
