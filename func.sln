@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "api\api.csproj", "{EF675628-C251-41CE-A987-A3A7794FEA0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\func.csproj", "{EF675628-C251-41CE-A987-A3A7794FEA0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api.tests", "api.tests\api.tests.csproj", "{AEFF6ADB-0BA0-4B80-8E9E-0C03252E36F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api.tests", "tests\func.tests.csproj", "{AEFF6ADB-0BA0-4B80-8E9E-0C03252E36F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
